@@ -25,7 +25,7 @@ const file = args[1];
 
 // runtime
 
-// file path and arguments verifier. must have a valid file path and arguments must be valid
+// must have a valid url and filename
 
 if (!url || !file) {
   console.log('Invalid URL or file path. Try again!');
@@ -48,6 +48,20 @@ const pageFetch = () => {
   });
 };
 
+// checking if file already exists
+
+if (fs.existsSync(file)) {
+  rl.question(`${file} already exists. Overwrite? (y/n) : ` , (answer) => {
+    if (answer === 'y') {
+      pageFetch();
+    } else {
+      process.exit();
+    }
+  });
+} else {
+  pageFetch();
+}
+
 // file saving to disk
 
 const saveFile = (body) => {
@@ -59,17 +73,3 @@ const saveFile = (body) => {
     process.exit();
   });
 };
-
-// checking if file already exists
-
-if (fs.existsSync(file)) {
-  rl.question(`${file} already exists. Overwrite? (y/n) :` , (answer) => {
-    if (answer === 'y') {
-      pageFetch();
-    } else {
-      process.exit();
-    }
-  });
-} else {
-  pageFetch();
-}
